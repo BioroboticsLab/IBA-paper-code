@@ -1,7 +1,6 @@
-# Code for the Paper "Information Bottleneck for Attribution: What is Sufficient for Prediction?"
+# Code for the Paper "Restricting the Flow: Information Bottlenecks for Attribution"
 
-This is the source code for the paper "Information Bottleneck for Attribution:
-What is Sufficient for Prediction?".
+This is the source code for the paper "Restricting the Flow: Information Bottlenecks for Attribution" under review for ICLR2020.
 <p align="center"> 
     <img alt="Example GIF" width="200" src="monkeys.gif"><br>
     Iterations of the Per-Sample Bottleneck
