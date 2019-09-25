@@ -2,6 +2,10 @@
 
 This is the source code for the paper "Information Bottleneck for Attribution:
 What is Sufficient for Prediction?".
+<p align="center"> 
+    <img alt="Example GIF" width="200" src="monkeys.gif"><br>
+    Iterations of the Per-Sample Bottleneck
+</p>
 
 ## Setup
 
