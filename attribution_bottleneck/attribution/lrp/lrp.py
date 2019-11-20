@@ -34,3 +34,4 @@ class LRP(AttributionMethod):
 
         heatmap = to_np(relevance[0]).sum(0)
         return heatmap
+        #return (heatmap - heatmap.min()) / (heatmap.max() - heatmap.min())

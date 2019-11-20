@@ -1,6 +1,6 @@
 import abc
 
-from attribution_bottleneck.attribution.base import HeatmapTransform
+from attribution_bottleneck.utils.transforms import HeatmapTransform
 from attribution_bottleneck.utils.misc import *
 from attribution_bottleneck.utils.misc import to_np_img
 
@@ -76,7 +76,7 @@ class CamOverlayPlotter(Plotter):
         assert len(hmap.shape) == 2, "hmap has not the right shape: {}".format(hmap.shape)
 
         hmap = HeatmapTransform.set_absmax(hmap.astype(float))  # in [-1,1]
-        im = ax.imshow(hmap, vmin=-1, vmax=1, cmap="jet")
+        im = ax.imshow(hmap, vmin=-1, vmax=1, cmap="seismic")
 
         # divider = make_axes_locatable(ax)
         # cax = divider.append_axes("right", size="5%", pad=0.05)
