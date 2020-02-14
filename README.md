@@ -1,6 +1,6 @@
 # Code for the Paper "Restricting the Flow: Information Bottlenecks for Attribution"
 
-This is the source code for the paper ["Restricting the Flow: Information Bottlenecks for Attribution"](https://openreview.net/forum?id=S1xWh1rYwB) under review for ICLR2020.
+This is the source code for the paper ["Restricting the Flow: Information Bottlenecks for Attribution"](https://openreview.net/forum?id=S1xWh1rYwB) accepted as an Oral at ICLR2020.
 <p align="center"> 
     <img alt="Example GIF" width="300" src="monkeys.gif"><br>
     Iterations of the Per-Sample Bottleneck
