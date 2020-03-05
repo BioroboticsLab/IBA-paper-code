@@ -121,9 +121,11 @@ class ReadoutBottleneck(AttributionBottleneck):
         # Smoothing step
         lamb = self.smooth[0](lamb) if self.smooth is not None else lamb
 
-        # Normalize x
+        # Normalize x, see per_sample_bottleneck.py for an explanations
         x_norm = (x - self.mean_0) / self.std_0
-        mu, log_var = x_norm * lamb, torch.log(1-lamb)
+        mu = x_norm * lamb
+        var = (1-lamb)**2
+        log_var = torch.log(var)
 
         # Sampling step
         # Sample new output values from p(z|x)

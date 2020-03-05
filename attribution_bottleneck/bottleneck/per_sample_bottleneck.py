@@ -60,24 +60,45 @@ class PerSampleBottleneck(AttributionBottleneck):
             self.alpha.fill_(self.initial_value)
         return self.alpha
 
-    def forward(self, x):
-        """ Remove information from x by performing a sampling step, parametrized by the mask alpha """
+    def forward(self, r):
+        """ Remove information from r by performing a sampling step, parametrized by the mask alpha """
         # Smoothen and expand a on batch dimension
         lamb = self.sigmoid(self.alpha)
-        lamb = lamb.expand(x.shape[0], x.shape[1], -1, -1)
+        lamb = lamb.expand(r.shape[0], r.shape[1], -1, -1)
         lamb = self.smooth(lamb) if self.smooth is not None else lamb
 
-        # Normalize x
-        x_norm = (x - self.mean) / self.std
+        # We normalize r to simplify the computation of the KL-divergence
+        #
+        # The equation in the paper is:
+        # Z = λ * R + (1 - λ) * ε)
+        # where ε ~ N(μ_r, σ_r**2)
+        #  and given R the distribution of Z ~ N(λ * R, ((1 - λ) σ_r)**2)
+        #
+        # In the code μ_r = self.mean and σ_r = self.std.
+        #
+        # To simplify the computation of the KL-divergence we normalize:
+        #   R_norm = (R - μ_r) / σ_r
+        #   ε ~ N(0, 1)
+        #   Z_norm ~ N(λ * R_norm, (1 - λ))**2)
+        #   Z =  σ_r * Z_norm + μ_r
+        #
+        # We compute KL[ N(λ * R_norm, (1 - λ))**2) || N(0, 1) ].
+        #
+        # The KL-divergence is invariant to scaling, see:
+        # https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence#Properties
+
+        r_norm = (r - self.mean) / self.std
 
         # Get sampling parameters
-        mu, log_var = x_norm * lamb, torch.log(1-lamb)
+        noise_var = (1-lamb)**2
+        scaled_signal = r_norm * lamb
+        noise_log_var = torch.log(noise_var)
 
-        # Sample new output values from p(z|x)
-        z_norm = self._sample_z(mu, log_var)
-        self.buffer_capacity = self._calc_capacity(mu, log_var)
+        # Sample new output values from p(z|r)
+        z_norm = self._sample_z(scaled_signal, noise_log_var)
+        self.buffer_capacity = self._calc_capacity(scaled_signal, noise_log_var)
 
-        # Denormalize z to match magnitude of x
+        # Denormalize z to match magnitude of r
         z = z_norm * self.std + self.mean
 
         # Clamp output, if input was post-relu
