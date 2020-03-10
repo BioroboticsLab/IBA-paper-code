@@ -1,5 +1,8 @@
 # Code for the Paper "Restricting the Flow: Information Bottlenecks for Attribution"
 
+For an **easy-to-use implementation** (nice API, examples & documentatio), see [BioroboticsLab/IBA](https://github.com/BioroboticsLab/IBA).
+
+
 This is the source code for the paper ["Restricting the Flow: Information Bottlenecks for Attribution"](https://openreview.net/forum?id=S1xWh1rYwB) accepted as an Oral at ICLR2020.
 <p align="center"> 
     <img alt="Example GIF" width="300" src="monkeys.gif"><br>
